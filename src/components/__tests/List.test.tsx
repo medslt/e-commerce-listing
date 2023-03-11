@@ -35,10 +35,10 @@ export const DATA = [{
 beforeAll(() => jest.spyOn(window, 'fetch'))
 
 test('renders ads ', async () => {
-  window.fetch.mockResolvedValueOnce({
+  (window.fetch as jest.Mock).mockResolvedValueOnce({
     ok: true,
     json: async () => ({products: DATA}),
-  })
+  });
 
   render(<List />);
   
