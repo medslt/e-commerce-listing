@@ -3,8 +3,15 @@ import Ad from 'src/components/Ad/Ad'
 import {Product, SortByTypes} from 'src/types';
 import style from './List.module.css'
 
+type Pagination = {
+    from: number
+    size: number
+    sortType: number
+    total: number
+}
 type JSONResponse = {
     products: Product[]
+    pagination: Pagination
   }
 
 const PRODUCTS_URL = new URL('https://spanishinquisition.victorianplumbing.co.uk/interviews/listings?apikey=yj2bV48J40KsBpIMLvrZZ1j1KwxN4u3A83H8IBvI')
@@ -17,7 +24,7 @@ const fetchData = async (sortType: number, pageNumber: number, query:string = 't
         additionalPages: 0,
         sort: sortType
    })
-
+   
     try {
         const resp = await fetch(PRODUCTS_URL, {
             method: 'POST',
@@ -26,7 +33,6 @@ const fetchData = async (sortType: number, pageNumber: number, query:string = 't
                 'Content-Type': 'application/json'
             },
             body,
-        
         })
 
         const data: JSONResponse = await resp.json()
@@ -49,18 +55,24 @@ const List = () => {
     const [ads, setAds] = useState<Product[]>([])
     const [loading, setLoading] = useState(false)
     const [sortType, setSortType] = useState<SortByTypes>(SortByTypes.RECOMMENDED)
+    const [pageNumber, setPageNumber] = useState(1)
+    const [hasMorePages, setHasMorePages] = useState(false)
 
     useEffect(() => {
-        fetchAds(sortType)
+        fetchAds(sortType, pageNumber)
     }, [])
     
 
-    const fetchAds = async (sortType: number, pageNumber: number=1) => {
+    const fetchAds = async (sortType: number, pageNumber: number) => {
         setLoading(true)
         try {
-            const data = await fetchData(sortType, pageNumber)
+            const {products, pagination} = await fetchData(sortType, pageNumber)
+            const {total, from, size} = pagination
+            
+            const nextHasMorePages = (from + size) < total
 
-            setAds(data.products)
+            setAds(products)
+            setHasMorePages(nextHasMorePages)
         } catch (error) {
             // to do manage errors 
         }
@@ -69,8 +81,26 @@ const List = () => {
 
     const handleSelectSortType: React.ChangeEventHandler<HTMLSelectElement>  = (e) => {
         const nextSortType = +e.target.value
-        fetchAds(nextSortType)
+        const nextPageNumber = 1
+        fetchAds(nextSortType, nextPageNumber)
+        setPageNumber(nextPageNumber)
         setSortType(nextSortType)
+    }
+
+    const handleLoadMore: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+        const nextPageNumber = pageNumber + 10
+        setPageNumber(nextPageNumber)
+        try {
+            fetchData(sortType, nextPageNumber).then(({products, pagination}) => {
+                const {total, from, size} = pagination
+                const nextHasMorePages = (from + size) < total
+
+                setAds([...ads, ...products])
+                setHasMorePages(nextHasMorePages)
+            }) 
+        } catch (error) {
+            // to do manage errors 
+        }
     }
 
     return (
@@ -85,10 +115,18 @@ const List = () => {
             </div>
             <div className={style.list}>
                 {
-                loading ? (<div> Loading ... </div>) : ads.map((ad)=><Ad key={ad.id} {...ad} testId="ad"/>
+                loading ?
+                 (<div> Loading ... </div>) : 
+                  ads.map((ad)=><Ad key={ad.id} {...ad} testId="ad"/>
                 )
             }
             </div>
+           {hasMorePages && (<div>
+                <button onClick={handleLoadMore}>
+                    LOAD MORE
+                </button>
+            </div>)
+            }
         </div>
     )
 }
