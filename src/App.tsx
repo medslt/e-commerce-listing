@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import { Product, SortByTypes } from "src/types";
 import { fetchData } from "src/utils";
 import List from "src/components/List/";
@@ -6,14 +6,34 @@ import Select from "src/components/Select";
 
 import "./App.module.css";
 
+type State = {
+  ads: Product[],
+  sortType: SortByTypes,
+  pageNumber: number,
+  hasMorePages: boolean,
+}
+
+export type Payload = Partial<State>
+
+const stateReducer = (
+  state: State,
+  payload: Payload
+) => {
+  return {...state, ...payload}
+} 
+
+const DEFAULT_STATE = {
+  ads: [],
+  sortType: SortByTypes.RECOMMENDED,
+  pageNumber: 1,
+  hasMorePages: false
+}
+
 const App = () => {
-  const [ads, setAds] = useState<Product[]>([]);
+  const [state, dispatch] = useReducer(stateReducer, DEFAULT_STATE)
   const [loading, setLoading] = useState(false);
-  const [sortType, setSortType] = useState<SortByTypes>(
-    SortByTypes.RECOMMENDED
-  );
-  const [pageNumber, setPageNumber] = useState(1);
-  const [hasMorePages, setHasMorePages] = useState(false);
+ 
+  const {ads, pageNumber, sortType, hasMorePages} = state
 
   useEffect(() => {
     fetchAds(sortType, pageNumber);
@@ -27,8 +47,14 @@ const App = () => {
 
       const nextHasMorePages = from + size < total;
 
-      setAds(products);
-      setHasMorePages(nextHasMorePages);
+      const newState = {
+        pageNumber,
+        sortType,
+        ads: products,
+        hasMorePages: nextHasMorePages,
+      }
+      dispatch(newState)
+     
     } catch (error) {
       // to do manage errors
     }
@@ -38,20 +64,21 @@ const App = () => {
   const handleChangeSelectSortType = (nextSortType: SortByTypes) => {
     const nextPageNumber = 1;
     fetchAds(nextSortType, nextPageNumber);
-    setPageNumber(nextPageNumber);
-    setSortType(nextSortType);
   };
 
   const handleLoadMore: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const nextPageNumber = pageNumber + 1
-    setPageNumber(nextPageNumber)
     try {
         fetchData(sortType, nextPageNumber).then(({products, pagination}) => {
             const {total, from, size} = pagination
             const nextHasMorePages = (from + size) < total
 
-            setAds([...ads, ...products])
-            setHasMorePages(nextHasMorePages)
+            const newState = {
+              pageNumber: nextPageNumber,
+              ads: [...ads, ...products],
+              hasMorePages: nextHasMorePages,
+            }
+            dispatch(newState)
         }) 
     } catch (error) {
         // to do manage errors 
