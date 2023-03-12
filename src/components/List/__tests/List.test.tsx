@@ -2,62 +2,8 @@ import {
   render,
   screen,
 } from "@testing-library/react";
-import {Product} from 'src/types';
-
+import {PRODUCTS} from 'src/Pages/App/__tests/data';
 import List from "../List";
-
-export const PRODUCTS = [
-  {
-    id: "RANDOM_ID-1",
-    productName: "RANDOM NAME 1",
-    price: {
-      currencyCode: "GBP",
-      priceIncTax: 189.95,
-      priceExcTax: 158.29,
-      isOnPromotion: false,
-    },
-    image: {
-      url: "IMG_URL_1",
-      attributes: {
-        imageAltText: "IMAGE DESCRIPTION 1",
-      },
-    },
-    brand: {
-      name: "Random Brand Name 1",
-      brandImage: {
-        url: "IMG_URL_1",
-        attributes: {
-          imageAltText: "BRAND IMAGE DESCRIPTION 1",
-        },
-      },
-    },
-  },
-  {
-    id: "RANDOM_ID-2",
-    productName: "RANDOM NAME 2",
-    price: {
-      currencyCode: "GBP",
-      priceIncTax: 186.95,
-      priceExcTax: 159.29,
-      isOnPromotion: false,
-    },
-    image: {
-      url: "IMG_URL_2",
-      attributes: {
-        imageAltText: "IMAGE DESCRIPTION 2",
-      },
-    },
-    brand: {
-      name: "Random Brand Name 2",
-      brandImage: {
-        url: "IMG_URL_2",
-        attributes: {
-          imageAltText: "BRAND IMAGE DESCRIPTION 2",
-        },
-      },
-    },
-  },
-] as Product[]
 
 
 test("should render ads", async () => {

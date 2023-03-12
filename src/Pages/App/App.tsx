@@ -3,7 +3,6 @@ import { Product, SortByTypes } from "src/types";
 import { fetchData } from "src/utils";
 import List from "src/components/List/";
 import Select from "src/components/Select";
-
 import "./App.module.css";
 
 type State = {
@@ -13,9 +12,8 @@ type State = {
   hasMorePages: boolean;
 };
 
-export type Payload = Partial<State>;
 
-const stateReducer = (state: State, payload: Payload) => {
+const stateReducer = (state: State, payload: Partial<State>) => {
   return { ...state, ...payload };
 };
 
@@ -50,6 +48,7 @@ const App = () => {
         ads: products,
         hasMorePages: nextHasMorePages,
       };
+
       dispatch(newState);
     } catch (error) {
       // to do manage errors
