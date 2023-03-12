@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, within, waitFor, prettyDOM , waitForElementToBeRemoved} from '@testing-library/react';
+import { render, screen , waitForElementToBeRemoved} from '@testing-library/react';
 import List from '../List';
 
 export const PRODUCTS = [{
