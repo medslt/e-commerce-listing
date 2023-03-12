@@ -1,5 +1,6 @@
-import React from 'react';
-import { render, screen , waitForElementToBeRemoved} from '@testing-library/react';
+import { within, render, screen , waitForElementToBeRemoved} from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
+
 import List from '../List';
 
 export const PRODUCTS = [{
@@ -124,4 +125,45 @@ test('should render the Price for each product', async () => {
 
     expect(price).toBeInTheDocument()
   }
+})
+
+
+test('should render all Sort BY filter options', async  () => {
+  render(<List />);
+  await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
+  const sortSelect = screen.getByRole('combobox', {
+    name: /sort by:/i
+  })
+
+  expect(within(sortSelect).getAllByRole('option').length).toBe(4)
+})
+
+test('should correctly set default option to Sort BY filter', async () => {
+  render(<List />);
+  await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
+
+  const sortSelect = screen.getByRole('combobox', {
+    name: /sort by:/i
+  }) as HTMLSelectElement
+
+  const recommendedOption = within(sortSelect).getByRole('option', { name: 'Recommended' }) as HTMLOptionElement
+  expect(recommendedOption.selected).toBe(true)
+})
+
+test('should allow user to change Sort_By filter', async () => {
+  render(<List />);
+  await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
+  
+  const sortSelect = screen.getByRole('combobox', {
+    name: /sort by:/i
+  })
+
+  userEvent.selectOptions(
+    sortSelect,
+    screen.getByRole('option', { name: 'Lowest price' } ),
+  )
+
+  const LowestPriceOption = await within(sortSelect).findByRole('option', { name: 'Lowest price' }) as HTMLOptionElement
+  
+  expect(LowestPriceOption.selected).toBe(true)
 })
