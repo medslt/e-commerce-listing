@@ -3,6 +3,7 @@ import {
   render,
   screen,
   waitForElementToBeRemoved,
+  waitFor,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -61,6 +62,41 @@ export const PRODUCTS = [
   },
 ];
 
+const MORE_PRODUCTS = [
+  {
+    id: "RANDOM_ID-3",
+    productName: "RANDOM NAME 3",
+    price: {
+      currencyCode: "GBP",
+      priceIncTax: 183.95,
+      priceExcTax: 154.29,
+      isOnPromotion: false,
+    },
+    image: {
+      url: "IMG_URL_3",
+      attributes: {
+        imageAltText: "IMAGE DESCRIPTION 3",
+      },
+    },
+    brand: {
+      name: "Random Brand Name 3",
+      brandImage: {
+        url: "IMG_URL_3",
+        attributes: {
+          imageAltText: "BRAND IMAGE DESCRIPTION 3",
+        },
+      },
+    },
+  },
+]
+
+const PAGINATION = {
+    from: 0,
+    size: 30,
+    total: 60,
+    sortType: 1
+  }
+
 beforeAll(() => {
   jest.spyOn(window, "fetch");
 });
@@ -68,7 +104,7 @@ beforeAll(() => {
 beforeEach(() => {
   (window.fetch as jest.Mock).mockResolvedValue({
     ok: true,
-    json: async () => ({ products: PRODUCTS }),
+    json: async () => ({ products: PRODUCTS, pagination: PAGINATION }),
   });
 });
 
@@ -163,9 +199,42 @@ test("should allow user to change Sort_By filter", async () => {
     screen.getByRole("option", { name: "Lowest price" })
   );
 
-  const LowestPriceOption = (await within(sortSelect).findByRole("option", {
+  const LowestPriceOption = (within(sortSelect).getByRole("option", {
     name: "Lowest price",
   })) as HTMLOptionElement;
 
   expect(LowestPriceOption.selected).toBe(true);
 });
+
+test("should display Load more button", async () => {
+  render(<List />);
+  await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+  const loadMoreBtn = screen.getByRole('button', {
+    name: /load more/i
+  })
+
+  expect(loadMoreBtn).toBeInTheDocument()
+});
+
+test("should load more ads when user click on Load more button", async () => {
+  (window.fetch as jest.Mock).mockResolvedValueOnce({
+    ok: true,
+    json: async () => ({ products: MORE_PRODUCTS, pagination: PAGINATION }),
+  });
+
+  render(<List />);
+  await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+  const loadMoreBtn = screen.getByRole('button', {
+    name: /load more/i
+  })
+
+  userEvent.click(loadMoreBtn)
+ 
+  await waitFor(() =>  expect(screen.getAllByTestId("ad")).toHaveLength(PRODUCTS.length + MORE_PRODUCTS.length))
+});
+
+
+
+
