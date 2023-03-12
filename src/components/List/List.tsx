@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Ad from 'src/components/Ad/Ad'
 import {Product, SortByTypes} from 'src/types';
+import Select from './Select'
 import style from './List.module.css'
 
 type Pagination = {
@@ -16,13 +17,13 @@ type JSONResponse = {
 
 const PRODUCTS_URL = new URL('https://spanishinquisition.victorianplumbing.co.uk/interviews/listings?apikey=yj2bV48J40KsBpIMLvrZZ1j1KwxN4u3A83H8IBvI')
 
-const fetchData = async (sortType: number, pageNumber: number, query:string = 'toilets') => {
+const fetchData = async (sort: number, pageNumber: number, query:string = 'toilets', size:number=30, additionalPages:number=0) => {
     const body =  JSON.stringify({
-        size: 30,
+        size,
         query,
         pageNumber,
-        additionalPages: 0,
-        sort: sortType
+        additionalPages,
+        sort
    })
    
     try {
@@ -42,13 +43,6 @@ const fetchData = async (sortType: number, pageNumber: number, query:string = 't
         throw error
     }
 };
-
-const SORT_BY_OPTIONS = [
-    {value: SortByTypes.RECOMMENDED , name: 'Recommended'},
-    {value: SortByTypes.LOWEST_PRICE , name: 'Lowest price'},
-    {value: SortByTypes.HIGHEST_PRICE, name: 'Highest price' },
-    {value: SortByTypes.HIGHEST_DISCOUNT, name:'Highest discount' },
-]
 
 
 const List = () => {
@@ -79,8 +73,7 @@ const List = () => {
             setLoading(false)
     }
 
-    const handleSelectSortType: React.ChangeEventHandler<HTMLSelectElement>  = (e) => {
-        const nextSortType = +e.target.value
+    const handleChangeSelectSortType  = (nextSortType: SortByTypes) => {
         const nextPageNumber = 1
         fetchAds(nextSortType, nextPageNumber)
         setPageNumber(nextPageNumber)
@@ -88,7 +81,7 @@ const List = () => {
     }
 
     const handleLoadMore: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-        const nextPageNumber = pageNumber + 10
+        const nextPageNumber = pageNumber + 1
         setPageNumber(nextPageNumber)
         try {
             fetchData(sortType, nextPageNumber).then(({products, pagination}) => {
@@ -106,12 +99,7 @@ const List = () => {
     return (
         <div  data-testid="ad-list">
             <div>
-            <label>
-                Sort by:
-                <select name="sort" value={sortType} onChange={handleSelectSortType}>
-                    {SORT_BY_OPTIONS.map(({value, name})=> (<option key={value} value={value}>{name}</option>))}
-                </select>
-                </label>
+                <Select sortType={sortType} onChangeSortType={handleChangeSelectSortType} />
             </div>
             <div className={style.list}>
                 {
