@@ -7,33 +7,30 @@ import Select from "src/components/Select";
 import "./App.module.css";
 
 type State = {
-  ads: Product[],
-  sortType: SortByTypes,
-  pageNumber: number,
-  hasMorePages: boolean,
-}
+  ads: Product[];
+  sortType: SortByTypes;
+  pageNumber: number;
+  hasMorePages: boolean;
+};
 
-export type Payload = Partial<State>
+export type Payload = Partial<State>;
 
-const stateReducer = (
-  state: State,
-  payload: Payload
-) => {
-  return {...state, ...payload}
-} 
+const stateReducer = (state: State, payload: Payload) => {
+  return { ...state, ...payload };
+};
 
 const DEFAULT_STATE = {
   ads: [],
   sortType: SortByTypes.RECOMMENDED,
   pageNumber: 1,
-  hasMorePages: false
-}
+  hasMorePages: false,
+};
 
 const App = () => {
-  const [state, dispatch] = useReducer(stateReducer, DEFAULT_STATE)
+  const [state, dispatch] = useReducer(stateReducer, DEFAULT_STATE);
   const [loading, setLoading] = useState(false);
- 
-  const {ads, pageNumber, sortType, hasMorePages} = state
+
+  const { ads, pageNumber, sortType, hasMorePages } = state;
 
   useEffect(() => {
     fetchAds(sortType, pageNumber);
@@ -52,9 +49,8 @@ const App = () => {
         sortType,
         ads: products,
         hasMorePages: nextHasMorePages,
-      }
-      dispatch(newState)
-     
+      };
+      dispatch(newState);
     } catch (error) {
       // to do manage errors
     }
@@ -67,23 +63,23 @@ const App = () => {
   };
 
   const handleLoadMore: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    const nextPageNumber = pageNumber + 1
+    const nextPageNumber = pageNumber + 1;
     try {
-        fetchData(sortType, nextPageNumber).then(({products, pagination}) => {
-            const {total, from, size} = pagination
-            const nextHasMorePages = (from + size) < total
+      fetchData(sortType, nextPageNumber).then(({ products, pagination }) => {
+        const { total, from, size } = pagination;
+        const nextHasMorePages = from + size < total;
 
-            const newState = {
-              pageNumber: nextPageNumber,
-              ads: [...ads, ...products],
-              hasMorePages: nextHasMorePages,
-            }
-            dispatch(newState)
-        }) 
+        const newState = {
+          pageNumber: nextPageNumber,
+          ads: [...ads, ...products],
+          hasMorePages: nextHasMorePages,
+        };
+        dispatch(newState);
+      });
     } catch (error) {
-        // to do manage errors 
+      // to do manage errors
     }
-}
+  };
 
   return (
     <div>
@@ -93,13 +89,13 @@ const App = () => {
           onChangeSortType={handleChangeSelectSortType}
         />
       </div>
-      <List loading={loading} ads={ads}/>
+      <List loading={loading} ads={ads} />
 
-      {hasMorePages && (<div>
-                <button onClick={handleLoadMore}>
-                    LOAD MORE
-                </button>
-            </div>)}
+      {hasMorePages && (
+        <div>
+          <button onClick={handleLoadMore}>LOAD MORE</button>
+        </div>
+      )}
     </div>
   );
 };

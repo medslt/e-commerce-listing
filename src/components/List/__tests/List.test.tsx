@@ -1,7 +1,6 @@
 import {
   render,
   screen,
-  waitForElementToBeRemoved,
 } from "@testing-library/react";
 import {Product} from 'src/types';
 
@@ -72,7 +71,6 @@ test("should render ads", async () => {
 test("should render the Image for each product", async () => {
   render(<List loading={false} ads={PRODUCTS}/>);
 
-  await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
 
   // Check the image for each PRODUCT
   for (let i = 0; i < PRODUCTS.length; i++) {
@@ -88,8 +86,6 @@ test("should render the Image for each product", async () => {
 test("should render the Product Name for each product", async () => {
   render(<List loading={false} ads={PRODUCTS}/>);
 
-  await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
-
   // Check the image for each PRODUCT
   for (let i = 0; i < PRODUCTS.length; i++) {
     const currentProduct = PRODUCTS[i];
@@ -101,8 +97,6 @@ test("should render the Product Name for each product", async () => {
 
 test("should render the Price for each product", async () => {
   render(<List loading={false} ads={PRODUCTS}/>);
-
-  await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
 
   // Check the image for each PRODUCT
   for (let i = 0; i < PRODUCTS.length; i++) {

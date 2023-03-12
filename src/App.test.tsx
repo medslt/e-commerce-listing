@@ -88,14 +88,14 @@ const MORE_PRODUCTS = [
       },
     },
   },
-]
+];
 
 const PAGINATION = {
-    from: 0,
-    size: 30,
-    total: 60,
-    sortType: 1
-  }
+  from: 0,
+  size: 30,
+  total: 60,
+  sortType: 1,
+};
 
 beforeAll(() => {
   jest.spyOn(window, "fetch");
@@ -199,22 +199,22 @@ test("should allow user to change Sort_By filter", async () => {
     screen.getByRole("option", { name: "Lowest price" })
   );
 
-  const LowestPriceOption = (within(sortSelect).getByRole("option", {
+  const LowestPriceOption = within(sortSelect).getByRole("option", {
     name: "Lowest price",
-  })) as HTMLOptionElement;
+  }) as HTMLOptionElement;
 
-  expect(LowestPriceOption.selected).toBe(true);
+  await waitFor(() => expect(LowestPriceOption.selected).toBe(true));
 });
 
 test("should display Load more button", async () => {
   render(<App />);
   await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
 
-  const loadMoreBtn = screen.getByRole('button', {
-    name: /load more/i
-  })
+  const loadMoreBtn = screen.getByRole("button", {
+    name: /load more/i,
+  });
 
-  expect(loadMoreBtn).toBeInTheDocument()
+  expect(loadMoreBtn).toBeInTheDocument();
 });
 
 test("should load more ads when user click on Load more button", async () => {
@@ -226,15 +226,15 @@ test("should load more ads when user click on Load more button", async () => {
   render(<App />);
   await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
 
-  const loadMoreBtn = screen.getByRole('button', {
-    name: /load more/i
-  })
+  const loadMoreBtn = screen.getByRole("button", {
+    name: /load more/i,
+  });
 
-  userEvent.click(loadMoreBtn)
- 
-  await waitFor(() =>  expect(screen.getAllByTestId("ad")).toHaveLength(PRODUCTS.length + MORE_PRODUCTS.length))
+  userEvent.click(loadMoreBtn);
+
+  await waitFor(() =>
+    expect(screen.getAllByTestId("ad")).toHaveLength(
+      PRODUCTS.length + MORE_PRODUCTS.length
+    )
+  );
 });
-
-
-
-
