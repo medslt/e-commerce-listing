@@ -1,0 +1,11 @@
+.list {
+   display: flex; 
+   flex-flow: row wrap;
+   width: 1080px;
+   gap: 5px;
+   background-color: bisque;
+}
+
+.ad {
+    width: 270px;
+}
