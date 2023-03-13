@@ -3,7 +3,7 @@ import { Product } from "src/types";
 import style from "./Ad.module.css";
 
 export type AdProps = Product & {
-  testId: string;
+  testId?: string;
 };
 
 const currencySymbols: { [key: string]: string } = {
@@ -17,7 +17,7 @@ const getFormattedPrice = (currencyCode: string, price: number) => {
   return priceToDisplay;
 };
 
-const Ad = ({ image, productName, price, brand, testId }: AdProps) => {
+const Ad = ({ image, productName, price, brand, testId='ad-test' }: AdProps) => {
   const { url, attributes } = image;
   const { currencyCode, priceIncTax } = price;
   const priceToDisplay = getFormattedPrice(currencyCode, priceIncTax);
