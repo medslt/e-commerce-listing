@@ -1,10 +1,14 @@
 # E-Commerce Listing Page Task
 Technical task for a job interview. For more details see https://github.com/medslt/E-Commerce-Listing/blob/main/Spec.md
-
 # Demo
 https://medslt.github.io/e-commerce-listing/
 ## Setup
 Run `npm install`, then run `npm start` to start the application and `npm test` to run the tests.
+
+## Implemented features
+ - Generate a grid of product cards from the listing results using the API
+ - Sort by functionality
+ - Pagination functionality
 
 
 ### Technical environment
