@@ -1,4 +1,4 @@
-import Ad from "src/components/Ad/Ad";
+import Ad from "src/components/Ad";
 import { Product } from "src/types";
 import style from "./List.module.css";
 
@@ -12,7 +12,7 @@ const List = ({ ads, loading }: ListProps) => {
   }
 
   return (
-    <div data-testid="ad-list">
+    <div>
       <div className={style.list}>
         {ads.map((ad) => (
           <Ad key={ad.id} {...ad} testId="ad" />

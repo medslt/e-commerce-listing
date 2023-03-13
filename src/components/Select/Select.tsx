@@ -1,10 +1,11 @@
-import { SortByTypes } from "src/types";
+import {memo} from 'react'
+import { SortByTypes } from 'src/types';
 
 const SORT_BY_OPTIONS = [
-  { value: SortByTypes.RECOMMENDED, name: "Recommended" },
-  { value: SortByTypes.LOWEST_PRICE, name: "Lowest price" },
-  { value: SortByTypes.HIGHEST_PRICE, name: "Highest price" },
-  { value: SortByTypes.HIGHEST_DISCOUNT, name: "Highest discount" },
+  { value: SortByTypes.RECOMMENDED, name: 'Recommended' },
+  { value: SortByTypes.LOWEST_PRICE, name: 'Lowest price' },
+  { value: SortByTypes.HIGHEST_PRICE, name: 'Highest price' },
+  { value: SortByTypes.HIGHEST_DISCOUNT, name: 'Highest discount' },
 ];
 
 type SelectProps = {
@@ -32,4 +33,4 @@ const Select = ({ sortType, onChangeSortType }: SelectProps) => {
   );
 };
 
-export default Select;
+export default memo(Select);

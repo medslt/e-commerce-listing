@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState, useReducer, useCallback } from "react";
 import { Product, SortByTypes } from "src/types";
 import { fetchData } from "src/utils";
 import List from "src/components/List/";
@@ -56,10 +56,10 @@ const App = () => {
     setLoading(false);
   };
 
-  const handleChangeSelectSortType = (nextSortType: SortByTypes) => {
+  const handleChangeSelectSortType = useCallback((nextSortType: SortByTypes) => {
     const nextPageNumber = 1;
     fetchAds(nextSortType, nextPageNumber);
-  };
+  }, []) 
 
   const handleLoadMore: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const nextPageNumber = pageNumber + 1;
