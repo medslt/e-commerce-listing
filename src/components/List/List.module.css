@@ -1,7 +1,5 @@
 .list {
-   display: flex; 
-   flex-flow: row wrap;
-   width: 1080px;
-   gap: 5px;
-   background-color: bisque;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
 }

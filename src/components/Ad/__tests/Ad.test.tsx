@@ -8,7 +8,7 @@ import Ad from "../Ad";
 const PRODUCT = PRODUCTS[0]
 
 
-test("should render the Image of the product", async () => {
+test("should render the Image of the product", () => {
   render(<Ad {...PRODUCT}/>);
 
 
@@ -19,7 +19,7 @@ test("should render the Image of the product", async () => {
   expect(image).toBeInTheDocument();
 });
 
-test("should render the Product Name of the product", async () => {
+test("should render the Product Name of the product", () => {
   render(<Ad {...PRODUCT}/>);
 
   const productName = screen.getByText(PRODUCT.productName);
@@ -27,7 +27,7 @@ test("should render the Product Name of the product", async () => {
   expect(productName).toBeInTheDocument();
 });
 
-test("should render the Price of the product", async () => {
+test("should render the Price of the product", () => {
   render(<Ad {...PRODUCT}/>);
 
   const expectedPrice = "£ " + PRODUCT.price.priceIncTax;

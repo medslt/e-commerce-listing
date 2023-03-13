@@ -23,26 +23,26 @@ const Ad = ({ image, productName, price, brand, testId='ad-test' }: AdProps) => 
   const priceToDisplay = getFormattedPrice(currencyCode, priceIncTax);
 
   return (
-    <div className={style.ad} data-testid={testId}>
-      <div>
-        <img
-          src={url}
-          width="270"
-          loading="lazy"
-          alt={attributes.imageAltText}
-        />
-      </div>
-      <div>
-        <div>
+    <div className={style.adContainer}>
+      <div className={style.ad} data-testid={testId}>
           <img
-            src={brand.brandImage.url}
-            width="60"
-            loading="lazy"
-            alt={brand.brandImage.attributes.imageAltText}
-          />
+              src={url}
+              loading="lazy"
+              alt={attributes.imageAltText}
+              className={style.image}
+            />
+        <div className={style.adBlockInfo}>
+          <div>
+            <img
+              src={brand.brandImage.url}
+              width="60"
+              loading="lazy"
+              alt={brand.brandImage.attributes.imageAltText}
+            />
+          </div>
+          <div> {productName} </div>
+          <div className={style.price}> {priceToDisplay} </div>
         </div>
-        <div> {productName} </div>
-        <div> {priceToDisplay} </div>
       </div>
     </div>
   );

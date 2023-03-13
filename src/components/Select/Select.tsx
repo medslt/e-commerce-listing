@@ -1,5 +1,6 @@
 import {memo} from 'react'
 import { SortByTypes } from 'src/types';
+import style from "./Select.module.css";
 
 const SORT_BY_OPTIONS = [
   { value: SortByTypes.RECOMMENDED, name: 'Recommended' },
@@ -22,7 +23,7 @@ const Select = ({ sortType, onChangeSortType }: SelectProps) => {
   return (
     <label>
       Sort by:
-      <select name="sort" value={sortType} onChange={handleSelectSortType}>
+      <select name="sort" value={sortType} onChange={handleSelectSortType} className={style.select}>
         {SORT_BY_OPTIONS.map(({ value, name }) => (
           <option key={value} value={value}>
             {name}

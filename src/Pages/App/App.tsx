@@ -3,7 +3,7 @@ import { Product, SortByTypes } from "src/types";
 import { fetchData } from "src/utils";
 import List from "src/components/List/";
 import Select from "src/components/Select";
-import "./App.module.css";
+import style from "./App.module.css";
 
 type State = {
   ads: Product[];
@@ -81,17 +81,18 @@ const App = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div className={style.container}>
+      <div className={style.sort}>
         <Select
           sortType={sortType}
           onChangeSortType={handleChangeSelectSortType}
         />
       </div>
+
       <List loading={loading} ads={ads} />
 
       {hasMorePages && (
-        <div>
+        <div className={style.loadMoreAds}>
           <button onClick={handleLoadMore}>LOAD MORE</button>
         </div>
       )}
