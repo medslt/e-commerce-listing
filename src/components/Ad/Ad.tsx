@@ -17,7 +17,13 @@ const getFormattedPrice = (currencyCode: string, price: number) => {
   return priceToDisplay;
 };
 
-const Ad = ({ image, productName, price, brand, testId='ad-test' }: AdProps) => {
+const Ad = ({
+  image,
+  productName,
+  price,
+  brand,
+  testId = "ad-test",
+}: AdProps) => {
   const { url, attributes } = image;
   const { currencyCode, priceIncTax } = price;
   const priceToDisplay = getFormattedPrice(currencyCode, priceIncTax);
@@ -25,12 +31,12 @@ const Ad = ({ image, productName, price, brand, testId='ad-test' }: AdProps) => 
   return (
     <div className={style.adContainer}>
       <div className={style.ad} data-testid={testId}>
-          <img
-              src={url}
-              loading="lazy"
-              alt={attributes.imageAltText}
-              className={style.image}
-            />
+        <img
+          src={url}
+          loading="lazy"
+          alt={attributes.imageAltText}
+          className={style.image}
+        />
         <div className={style.adBlockInfo}>
           <div>
             <img

@@ -12,7 +12,6 @@ type State = {
   hasMorePages: boolean;
 };
 
-
 const stateReducer = (state: State, payload: Partial<State>) => {
   return { ...state, ...payload };
 };
@@ -56,10 +55,13 @@ const App = () => {
     setLoading(false);
   };
 
-  const handleChangeSelectSortType = useCallback((nextSortType: SortByTypes) => {
-    const nextPageNumber = 1;
-    fetchAds(nextSortType, nextPageNumber);
-  }, []) 
+  const handleChangeSelectSortType = useCallback(
+    (nextSortType: SortByTypes) => {
+      const nextPageNumber = 1;
+      fetchAds(nextSortType, nextPageNumber);
+    },
+    []
+  );
 
   const handleLoadMore: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const nextPageNumber = pageNumber + 1;

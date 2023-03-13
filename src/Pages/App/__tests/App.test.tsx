@@ -6,9 +6,8 @@ import {
   waitFor,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {MORE_PRODUCTS, PRODUCTS, PAGINATION } from './data'
+import { MORE_PRODUCTS, PRODUCTS, PAGINATION } from "./data";
 import App from "../App";
-
 
 beforeAll(() => {
   jest.spyOn(window, "fetch");
