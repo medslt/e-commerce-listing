@@ -1,46 +1,69 @@
-# Getting Started with Create React App
+Technical Task
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+We’d like to find out a bit more about how you approach problem solving by completing a technical exercise. You should aim to spend around 2-3 hours on this technical task, but are free to spend as much or little of those 2-3 hours as you wish. Please upload your code sample to GitHub and submit the link. Don’t worry if you don’t complete the task, can’t get the code to compile or have any other issues. We’re most interested in seeing how it is you tackle problem solving, and we’re looking to understand why you’ve made the decisions you have when it comes to your solution.
 
-## Available Scripts
+Your solution will provide the basis for your technical interview where we will explore extending your solution given certain business challenges.  If you don’t finish then don’t worry just send over what you’ve got.
 
-In the project directory, you can run:
+To be clear that while we practise TDD in some of our teams, unit tests are not required for this task.
 
-### `yarn start`
+E-Commerce Listing Page Task
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Please choose one or multiple parts below you feel best reflects your abilities.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Generate a grid of product cards from the listing results using our API
+Add to your list of product cards by adding Sort by filters and/ or pagination functionality
+Show us what you got? Use our data to build anything you want (keep it safe for work)
 
-### `yarn test`
+API
+Here is our publicly available API: https://spanishinquisition.victorianplumbing.co.uk/interviews/listings?apikey=yj2bV48J40KsBpIMLvrZZ1j1KwxN4u3A83H8IBvI
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Example body schema for the provided POST endpoint:
+{
+  "query": "toilets",
+  "pageNumber": 0,
+  "size": 0,
+  "additionalPages": 0,
+  "sort": 1
+}
 
-### `yarn build`
+query is the slug of the listing page e.g. “toilets” or “baths/corner-baths”
+pageNumer, size and additionalPages are all used for pagination.
+Sort accepts integers which correspond to the following values:
+1 = recommended
+2 = PriceLowToHight
+3 = PriceHighToLow
+4 = LargestDiscount
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Here is another example with facets and filters applied:
 
-### `yarn eject`
+{
+  "query": "toilets",
+  "pageNumber": 0,
+  "size": 0,
+  "additionalPages": 0,
+  "sort": 1,
+  "facets": {
+      "prices": [{
+            "identifier": "3D-02-FC-D0-B1-8F-65-51",
+            "value": {
+                "gte": 150.0,
+                "lte": 200.0
+            }
+      }],
+      "toiletStyle": [{
+            "identifier": "1A-0D-8E-F5-02-80-29-13",
+            "value": "Modern"
+      }]
+  }
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Example Page
+Here is a link to one of our product listings pages - https://www.victorianplumbing.co.uk/toilets.
+Please note we don’t expect a full page with headers and footer but specifically the listing section of the page. I’ve provided a screen shot to assist **.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+You can build this however you like; we’d prefer React to be used as this is our main stack for our projects. Using Create React App is fine.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+** screen shot of section of our product listing page we’d like you to focus on.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

@@ -1,5 +1,5 @@
 # E-Commerce Listing Page Task
-Technical task for a job interview. For more details see https://github.com/medslt/todo-list/blob/main/Spec.md
+Technical task for a job interview. For more details see https://github.com/medslt/E-Commerce-Listing/blob/main/Spec.md
 
 # Demo
 https://medslt.github.io//E-Commerce-Listing/
