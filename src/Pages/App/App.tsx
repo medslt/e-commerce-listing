@@ -65,7 +65,7 @@ const App = () => {
 
   const handleLoadMore: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const nextPageNumber = pageNumber + 1;
-    try {
+   
       fetchData(sortType, nextPageNumber).then(({ products, pagination }) => {
         const { total, from, size } = pagination;
         const nextHasMorePages = from + size < total;
@@ -77,9 +77,7 @@ const App = () => {
         };
         dispatch(newState);
       });
-    } catch (error) {
-      // to do manage errors
-    }
+   
   };
 
   return (
